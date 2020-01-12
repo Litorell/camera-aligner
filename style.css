@@ -1,0 +1,91 @@
+
+:root {
+    font-family: sans-serif;
+    color: #fff;
+}
+
+body {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background: #000;
+}
+
+header {
+    padding: 0 16px;
+    background: hsl(240, 10%, 8%);
+}
+
+canvas {
+    position: absolute;
+}
+
+main {
+    flex-grow: 1;
+    height: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+aside {
+    z-index: 1;
+    position: relative;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 16px;
+    background: hsl(240, 10%, 15%);
+    color: hsl(240, 10%, 75%);
+}
+
+.values span, .value {
+    font-weight: bold;
+    color: hsl(240, 10%, 90%);
+    padding: 3px;
+    background: hsl(240, 12%, 22%);
+    cursor: pointer;
+}
+
+
+.values span:hover, .value:hover {
+    background: hsl(240, 12%, 30%);
+}
+
+aside hr {
+    width: 100%;
+}
+
+aside#right {
+    min-width: 250px;
+    line-height: 2;
+}
+
+
+.labels-values {
+    display: flex;
+}
+
+.labels {
+    margin-right: 4px;
+    display: flex;
+    flex-direction: column;
+}
+
+input {
+    background: hsl(240, 10%, 15%);
+    color: #fff;
+}
+
+input[type=number] {
+    width: 80px;
+}
+
+[hidden] {
+    display: none;
+}
+
+
+.flex {
+    display: flex;
+}
