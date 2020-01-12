@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Camera Aligner</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="linear-algebra.js"></script>
+</head>
+<body>
+    <header>
+        <h1>Camera Aligner</h1>
+    </header>
+    <main>
+        <canvas id="main-canvas" ondrop="loadDropped(event)" ondragover="event.preventDefault()"></canvas>
+        <aside class="left">
+            <input type="file" id="image-file" onchange="uploadImage(this.files[0])">
+
+            <label>
+                Distance to origin:
+                <input type="number" id="distance-to-origin" value="5" onchange="refresh()">
+            </label>
+
+            <label>
+                Axis 1:
+                <select id="axis1" onchange="refresh()">
+                    <option value=" x" selected>X</option>
+                    <option value="-x">-X</option>
+                    <option value=" y">Y</option>
+                    <option value="-y">-Y</option>
+                    <option value=" z">Z</option>
+                    <option value="-z">-Z</option>
+                </select>
+            </label>
+
+            <label>
+                Axis 2:
+                <select id="axis2" onchange="refresh()">
+                    <option value=" x">X</option>
+                    <option value="-x">-X</option>
+                    <option value=" y" selected>Y</option>
+                    <option value="-y">-Y</option>
+                    <option value=" z">Z</option>
+                    <option value="-z">-Z</option>
+                </select>
+            </label>
+
+            <div>
+                Sensor size:
+                <div class="flex">
+                    <input type="number" id="sensor-width" value="32" onchange="updateSensorSize(0)">x
+                    <input type="number" id="sensor-height" value="24" onchange="updateSensorSize(1)">mm
+                </div>
+            </div>
+
+        </aside>
+
+        <aside id="right" hidden>
+            <section>
+                Focal length:
+                <br>
+                <span id="focal-length" class="value"></span>
+            </section>
+            <hr>
+            <section>
+                Field of view (longest side):
+                <br>
+                <span id="fov" class="value"></span>
+            </section>
+            <hr>
+            <section>
+                Location: 
+                <div class="labels-values">
+                    <div class="labels">
+                        <span>x:</span>
+                        <span>y:</span>
+                        <span>z:</span>
+                    </div>
+                    <div class="values">
+                        <span id="location-x"></span><br>
+                        <span id="location-y"></span><br>
+                        <span id="location-z"></span>
+                    </div>
+                </div>
+            </section>
+            <hr>
+            <section>
+                Euler rotation:
+                <div class="labels-values">
+                    <div class="labels">
+                        <span>x:</span>
+                        <span>y:</span>
+                        <span>z:</span>
+                    </div>
+                    <div class="values">
+                        <span id="rotation-x"></span><br>
+                        <span id="rotation-y"></span><br>
+                        <span id="rotation-z"></span>
+                    </div>
+                </div>
+            </section>
+            <input type="button" value="Copy Blender console command" onclick="navigator.clipboard.writeText(blenderCommand())">
+        </aside>
+    </main>
+
+    <img hidden id="source-img">
+    <script src="script.js"></script>
+</body>
+</html>
