@@ -13,9 +13,12 @@
         <h1>Camera Aligner</h1>
     </header>
     <main>
-        <canvas id="main-canvas" ondrop="loadDropped(event)" ondragover="event.preventDefault()"></canvas>
-        <aside class="left">
-            <input type="file" id="image-file" onchange="uploadImage(this.files[0])">
+        <aside hidden>
+            <h2>Settings</h2>
+            <label>
+                File:
+                <input type="file" accept="image/*" id="image-file" onchange="uploadImage(this.files[0])">
+            </label>
 
             <label>
                 Distance to origin:
@@ -48,60 +51,73 @@
 
             <div>
                 Sensor size:
-                <div class="flex">
-                    <input type="number" id="sensor-width" value="32" onchange="updateSensorSize(0)">x
-                    <input type="number" id="sensor-height" value="24" onchange="updateSensorSize(1)">mm
+                <div class="sensor-size">
+                    <input type="number" id="sensor-width" value="32" onchange="updateSensorSize(0)"><span>x</span> 
+                    <input type="number" id="sensor-height" value="24" onchange="updateSensorSize(1)"><span>mm</span>
                 </div>
             </div>
 
-        </aside>
+            <div id="results" hidden>
+                <hr>
+                <h2>Results</h2>
+                <section>
+                    Focal length:
+                    <br>
+                    <span id="focal-length" class="value"></span>
+                </section>
+                <hr>
+                <section>
+                    Field of view (longest side):
+                    <br>
+                    <span id="fov" class="value"></span>
+                </section>
+                <hr>
+                <section>
+                    Location: 
+                    <div class="labels-values">
+                        <div class="labels">
+                            <span>x:</span>
+                            <span>y:</span>
+                            <span>z:</span>
+                        </div>
+                        <div class="values">
+                            <span id="location-x"></span><br>
+                            <span id="location-y"></span><br>
+                            <span id="location-z"></span>
+                        </div>
+                    </div>
+                </section>
+                <hr>
+                <section>
+                    Euler rotation:
+                    <div class="labels-values">
+                        <div class="labels">
+                            <span>x:</span>
+                            <span>y:</span>
+                            <span>z:</span>
+                        </div>
+                        <div class="values">
+                            <span id="rotation-x"></span><br>
+                            <span id="rotation-y"></span><br>
+                            <span id="rotation-z"></span>
+                        </div>
+                    </div>
+                </section>
+                <hr>
+                <input type="button" value="Copy Blender console command" onclick="navigator.clipboard.writeText(getBlenderCommand())">
+                <textarea spellcheck="false" rows="2" id="blender-command"></textarea>
+            </div>
 
-        <aside id="right" hidden>
-            <section>
-                Focal length:
-                <br>
-                <span id="focal-length" class="value"></span>
-            </section>
-            <hr>
-            <section>
-                Field of view (longest side):
-                <br>
-                <span id="fov" class="value"></span>
-            </section>
-            <hr>
-            <section>
-                Location: 
-                <div class="labels-values">
-                    <div class="labels">
-                        <span>x:</span>
-                        <span>y:</span>
-                        <span>z:</span>
-                    </div>
-                    <div class="values">
-                        <span id="location-x"></span><br>
-                        <span id="location-y"></span><br>
-                        <span id="location-z"></span>
-                    </div>
-                </div>
-            </section>
-            <hr>
-            <section>
-                Euler rotation:
-                <div class="labels-values">
-                    <div class="labels">
-                        <span>x:</span>
-                        <span>y:</span>
-                        <span>z:</span>
-                    </div>
-                    <div class="values">
-                        <span id="rotation-x"></span><br>
-                        <span id="rotation-y"></span><br>
-                        <span id="rotation-z"></span>
-                    </div>
-                </div>
-            </section>
-            <input type="button" value="Copy Blender console command" onclick="navigator.clipboard.writeText(blenderCommand())">
         </aside>
+        <div id="canvas-container" onclick="triggerUpload()" ondragover="event.preventDefault()" ondrop="loadDropped(event)">
+            <canvas id="main-canvas">
+            </canvas>
+            <div id="upload" ondragover="event.preventDefault()" ondrop="loadDropped(event)">
+                <h3>Click here to select an image and begin</h3>
+                <h4>Or drag and drop an image</h4>
+            </div>
+        </div>
+
     </main>
 
     <img hidden id="source-img">
