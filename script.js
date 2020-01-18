@@ -18,8 +18,8 @@ class Corner {
      */
     constructor(uvCenter, point1, point2) {
         this.uvCenter = uvCenter
-        this.point1 = [point1[0] + uvCenter[0], point1[1] + uvCenter[1]]
-        this.point2 = [point2[0] + uvCenter[0], point2[1] + uvCenter[1]]
+        this.point1 = point1
+        this.point2 = point2
     }
 
     get points() {
@@ -37,8 +37,8 @@ class Corner {
 let origin = [0, 0]
 
 let corners = [
-    new Corner([-0.3, -0.3], [0.1, 0.01], [-0.03, 0.03]),
-    new Corner([0.3, 0.3], [-0.1, -0.01], [0.03, -0.03])
+    new Corner([-0.30, 0.07], [0.04,  0.24], [-0.08, -0.10]),
+    new Corner([ 0.36, 0.21], [0.11, -0.02], [ 0.17,  0.27])
 ]
 
 let zoomRatio = 1
@@ -58,9 +58,9 @@ let canvas = document.getElementById("main-canvas")
 let ctx = canvas.getContext("2d")
 
 function resizeCanvas() {
-    let main = document.getElementsByTagName("main")[0]
-    canvas.width = main.offsetWidth
-    canvas.height = main.offsetHeight
+    let container = document.getElementById("canvas-container")
+    canvas.width = container.offsetWidth
+    canvas.height = container.offsetHeight
     draw()
 }
 window.addEventListener("resize", () => resizeCanvas())
@@ -284,14 +284,14 @@ function getBlender4x4Matrix() {
     return `C.scene.camera.matrix_world = Matrix(${JSON.stringify(m.matrix).replace(/\[/g, "(").replace(/\]/g, ")")})`
 }
 
-function blenderCommand() {
+function getBlenderCommand() {
     return `${calcResults.blender4x4Matrix}\r\nC.scene.camera.data.lens = ${calcResults.focalLength}\r\n\r\n`
 }
 
 let calcResults = {}
 
 function calculate() {
-    let right = document.getElementById("right")
+    let right = document.getElementById("results")
     right.hidden = true
 
     let axis1 = document.getElementById("axis1").value
@@ -317,6 +317,8 @@ function calculate() {
         document.getElementById("rotation-x").innerText = calcResults.eulerRotation[0]
         document.getElementById("rotation-y").innerText = calcResults.eulerRotation[1]
         document.getElementById("rotation-z").innerText = calcResults.eulerRotation[2]
+
+        document.getElementById("blender-command").value = getBlenderCommand()
     }
 
 
@@ -545,32 +547,35 @@ function loadDropped(event) {
 
 
 function refresh() {
-
     calculate()
     draw()
+}
 
-
+function triggerUpload() {
+    document.getElementById("image-file").click()
 }
 
 
 
 function uploadImage(file) {
-    img.src = URL.createObjectURL(file)
-    img.onload = () => {
-        updateSensorSize()
-        draw()
+    if (file) {
+        document.getElementsByTagName("aside")[0].hidden = false
+        document.getElementById("canvas-container").removeAttribute("onclick")
+        document.getElementById("upload").style.visibility = "hidden"
+        
+        img.src = URL.createObjectURL(file)
+        img.onload = () => {
+            updateSensorSize()
+            resizeCanvas()
+        }
     }
 }
 
-
-
 resizeCanvas()
 
-
-
-
 document.querySelectorAll(".value, .values span").forEach(elem => {
-    elem.onclick = () => {
+    elem.onclick = (event) => {
+        console.log(event)
         navigator.clipboard.writeText(elem.innerText)
     }
     elem.title = "Copy"
