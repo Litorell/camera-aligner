@@ -285,7 +285,12 @@ function getBlender4x4Matrix() {
 }
 
 function getBlenderCommand() {
-    return `${calcResults.blender4x4Matrix}\r\nC.scene.camera.data.lens = ${calcResults.focalLength}\r\n\r\n`
+    return (
+`${calcResults.blender4x4Matrix}
+C.scene.camera.data.lens = ${calcResults.focalLength}
+C.scene.camera.data.sensor_width = ${calcResults.sensorLength}
+
+`)
 }
 
 let calcResults = {}
